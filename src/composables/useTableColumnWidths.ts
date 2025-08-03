@@ -1,5 +1,5 @@
 import { ref, computed, nextTick, type Ref, type ComputedRef } from 'vue'
-import { TableColumnType } from '@/enum/table.enum'
+// import { TableColumnType } from '@/enum/table.enum'
 
 export interface ColumnWidthElements {
   tableContainerRef: Ref<HTMLDivElement | null> // 表格容器
