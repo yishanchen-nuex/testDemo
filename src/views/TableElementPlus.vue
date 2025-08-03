@@ -1,43 +1,43 @@
 <template>
   <div class="p-8 bg-gray-50 min-h-screen">
     <div class="max-w-7xl mx-auto">
-      <h1 class="text-3xl font-bold text-gray-800 mb-8">自定义 Table 组件演示</h1>
-      
+      <h1 class="text-3xl font-bold text-gray-800 mb-8">
+        自定義 Element Table 组件演示
+      </h1>
+
       <!-- 基本表格 -->
       <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
-        <h2 class="text-xl font-semibold mb-4 text-gray-800">基金数据表格</h2>
-        
+        <h2 class="text-xl font-semibold mb-4 text-gray-800">基金資料表格</h2>
+
         <ElTable
           ref="multipleTable"
           :data="tableData"
           :columns="tableColumns"
           stripe
           border
-          :style="{ 
-            'max-height': '80vh', 
+          :style="{
+            'max-height': '80vh',
             'min-height': '300px',
-            'overflow-y': 'auto'
+            'overflow-y': 'auto',
           }"
         >
-          <!-- 自定义操作列 -->
           <template #operations="{ row, $index }">
-            <button 
-              @click="handleEdit(row, $index)" 
+            <button
+              @click="handleEdit(row, $index)"
               class="text-blue-600 hover:text-blue-800 mr-2"
             >
               编辑
             </button>
-            <button 
-              @click="handleDelete(row, $index)" 
+            <button
+              @click="handleDelete(row, $index)"
               class="text-red-600 hover:text-red-800"
             >
               删除
             </button>
           </template>
-          
-          <!-- 自定义状态列 -->
+
           <template #status="{ row }">
-            <span 
+            <span
               :class="getStatusClass(row.fundStatus)"
               class="px-2 py-1 rounded-full text-xs font-medium"
             >
@@ -54,12 +54,12 @@
 import { ref, reactive } from 'vue'
 import ElTable from '../components/ElTable.vue'
 
-// 表格数据 - 增加更多测试数据
+// 表格資料
 const tableData = ref([
   {
     fundCode: 'F001',
     fundName: '台灣高股息基金台灣高股息基金',
-    fundStatus: 'active',
+    fundStatus: 'primary',
     accountDate: '2024-01-15',
     accountAmount: 50000,
     benchmarkDate: '2024-01-10',
@@ -74,12 +74,12 @@ const tableData = ref([
     accountNumber: '123456789',
     exchangeRate: 1.0,
     exchangeRateDate: '2024-01-15',
-    reinvestmentDate: '2024-01-20'
+    reinvestmentDate: '2024-01-20',
   },
   {
     fundCode: 'F002',
     fundName: '新興市場債券基金',
-    fundStatus: 'suspended',
+    fundStatus: 'warning',
     accountDate: '2024-01-16',
     accountAmount: 75000,
     benchmarkDate: '2024-01-11',
@@ -94,12 +94,12 @@ const tableData = ref([
     accountNumber: '987654321',
     exchangeRate: 31.5,
     exchangeRateDate: '2024-01-16',
-    reinvestmentDate: '2024-01-21'
+    reinvestmentDate: '2024-01-21',
   },
   {
     fundCode: 'F003',
     fundName: '科技成長基金',
-    fundStatus: 'active',
+    fundStatus: 'success',
     accountDate: '2024-01-17',
     accountAmount: 120000,
     benchmarkDate: '2024-01-12',
@@ -114,12 +114,12 @@ const tableData = ref([
     accountNumber: '456789123',
     exchangeRate: 31.2,
     exchangeRateDate: '2024-01-17',
-    reinvestmentDate: '2024-01-22'
+    reinvestmentDate: '2024-01-22',
   },
   {
     fundCode: 'F004',
     fundName: '歐洲精選基金',
-    fundStatus: 'closed',
+    fundStatus: 'danger',
     accountDate: '2024-01-18',
     accountAmount: 88000,
     benchmarkDate: '2024-01-13',
@@ -134,12 +134,12 @@ const tableData = ref([
     accountNumber: '789123456',
     exchangeRate: 33.8,
     exchangeRateDate: '2024-01-18',
-    reinvestmentDate: '2024-01-23'
+    reinvestmentDate: '2024-01-23',
   },
   {
     fundCode: 'F005',
     fundName: '亞洲小型股基金',
-    fundStatus: 'active',
+    fundStatus: 'success',
     accountDate: '2024-01-19',
     accountAmount: 95000,
     benchmarkDate: '2024-01-14',
@@ -154,12 +154,12 @@ const tableData = ref([
     accountNumber: '321654987',
     exchangeRate: 1.0,
     exchangeRateDate: '2024-01-19',
-    reinvestmentDate: '2024-01-24'
+    reinvestmentDate: '2024-01-24',
   },
   {
     fundCode: 'F006',
     fundName: '美國大型成長股基金',
-    fundStatus: 'active',
+    fundStatus: 'success',
     accountDate: '2024-01-20',
     accountAmount: 150000,
     benchmarkDate: '2024-01-15',
@@ -174,12 +174,12 @@ const tableData = ref([
     accountNumber: '456123789',
     exchangeRate: 31.0,
     exchangeRateDate: '2024-01-20',
-    reinvestmentDate: '2024-01-25'
+    reinvestmentDate: '2024-01-25',
   },
   {
     fundCode: 'F007',
     fundName: '日本中小型股基金',
-    fundStatus: 'suspended',
+    fundStatus: 'warning',
     accountDate: '2024-01-21',
     accountAmount: 65000,
     benchmarkDate: '2024-01-16',
@@ -194,12 +194,12 @@ const tableData = ref([
     accountNumber: '789456123',
     exchangeRate: 0.21,
     exchangeRateDate: '2024-01-21',
-    reinvestmentDate: '2024-01-26'
+    reinvestmentDate: '2024-01-26',
   },
   {
     fundCode: 'F008',
     fundName: '新興亞洲股票基金',
-    fundStatus: 'active',
+    fundStatus: 'success',
     accountDate: '2024-01-22',
     accountAmount: 110000,
     benchmarkDate: '2024-01-17',
@@ -214,12 +214,12 @@ const tableData = ref([
     accountNumber: '147258369',
     exchangeRate: 31.1,
     exchangeRateDate: '2024-01-22',
-    reinvestmentDate: '2024-01-27'
+    reinvestmentDate: '2024-01-27',
   },
   {
     fundCode: 'F009',
     fundName: '全球債券基金',
-    fundStatus: 'active',
+    fundStatus: 'success',
     accountDate: '2024-01-23',
     accountAmount: 85000,
     benchmarkDate: '2024-01-18',
@@ -234,12 +234,12 @@ const tableData = ref([
     accountNumber: '963852741',
     exchangeRate: 31.3,
     exchangeRateDate: '2024-01-23',
-    reinvestmentDate: '2024-01-28'
+    reinvestmentDate: '2024-01-28',
   },
   {
     fundCode: 'F010',
     fundName: '拉丁美洲股票基金',
-    fundStatus: 'closed',
+    fundStatus: 'danger',
     accountDate: '2024-01-24',
     accountAmount: 72000,
     benchmarkDate: '2024-01-19',
@@ -254,12 +254,12 @@ const tableData = ref([
     accountNumber: '741852963',
     exchangeRate: 31.4,
     exchangeRateDate: '2024-01-24',
-    reinvestmentDate: '2024-01-29'
+    reinvestmentDate: '2024-01-29',
   },
   {
     fundCode: 'F011',
     fundName: '中國A股基金',
-    fundStatus: 'active',
+    fundStatus: 'success',
     accountDate: '2024-01-25',
     accountAmount: 98000,
     benchmarkDate: '2024-01-20',
@@ -274,12 +274,12 @@ const tableData = ref([
     accountNumber: '258147369',
     exchangeRate: 4.3,
     exchangeRateDate: '2024-01-25',
-    reinvestmentDate: '2024-01-30'
+    reinvestmentDate: '2024-01-30',
   },
   {
     fundCode: 'F012',
     fundName: '印度股票基金',
-    fundStatus: 'suspended',
+    fundStatus: 'warning',
     accountDate: '2024-01-26',
     accountAmount: 125000,
     benchmarkDate: '2024-01-21',
@@ -294,12 +294,12 @@ const tableData = ref([
     accountNumber: '369258147',
     exchangeRate: 0.38,
     exchangeRateDate: '2024-01-26',
-    reinvestmentDate: '2024-01-31'
+    reinvestmentDate: '2024-01-31',
   },
   {
     fundCode: 'F013',
     fundName: '澳洲資源股基金',
-    fundStatus: 'active',
+    fundStatus: 'success',
     accountDate: '2024-01-27',
     accountAmount: 89000,
     benchmarkDate: '2024-01-22',
@@ -314,12 +314,12 @@ const tableData = ref([
     accountNumber: '852741963',
     exchangeRate: 20.8,
     exchangeRateDate: '2024-01-27',
-    reinvestmentDate: '2024-02-01'
+    reinvestmentDate: '2024-02-01',
   },
   {
     fundCode: 'F014',
     fundName: '韓國科技基金',
-    fundStatus: 'active',
+    fundStatus: 'success',
     accountDate: '2024-01-28',
     accountAmount: 105000,
     benchmarkDate: '2024-01-23',
@@ -334,12 +334,12 @@ const tableData = ref([
     accountNumber: '159753486',
     exchangeRate: 0.024,
     exchangeRateDate: '2024-01-28',
-    reinvestmentDate: '2024-02-02'
+    reinvestmentDate: '2024-02-02',
   },
   {
     fundCode: 'F015',
     fundName: '英國股票收益基金',
-    fundStatus: 'closed',
+    fundStatus: 'danger',
     accountDate: '2024-01-29',
     accountAmount: 76000,
     benchmarkDate: '2024-01-24',
@@ -354,75 +354,89 @@ const tableData = ref([
     accountNumber: '486159753',
     exchangeRate: 38.9,
     exchangeRateDate: '2024-01-29',
-    reinvestmentDate: '2024-02-03'
-  }
+    reinvestmentDate: '2024-02-03',
+  },
 ])
 
-// 表格列配置
+// 表格列設定
 const tableColumns = [
   { prop: 'select', label: '', width: '50', slot: 'selection' },
   { prop: 'fundCode', label: '基金代碼', width: '100' },
   { prop: 'fundName', label: '基金名稱', minWidth: 200 },
-  { 
-    prop: 'fundStatus', 
-    label: '狀態', 
-    width: '100', 
-    slot: 'status'
+  {
+    prop: 'fundStatus',
+    label: '狀態',
+    width: '100',
+    slot: 'status',
   },
   { prop: 'accountDate', label: '帳務日期', width: '120' },
-  { 
-    prop: 'accountAmount', 
-    label: '帳務金額', 
+  {
+    prop: 'accountAmount',
+    label: '帳務金額',
     width: '120',
   },
   { prop: 'inventoryUnits', label: '庫存單位數', width: '120' },
   { prop: 'distributionType', label: '配息方式', width: '100' },
   { prop: 'dividendCurrency', label: '配息幣別', width: '100' },
-  { 
-    prop: 'navPerUnit', 
-    label: '單位淨值', 
+  {
+    prop: 'navPerUnit',
+    label: '單位淨值',
     width: '100',
     formatter: (row, column, cellValue) => {
       return cellValue.toFixed(2)
-    }
+    },
   },
-  { 
-    label: '操作', 
+  {
+    label: '操作',
     width: '150',
-    slot: 'operations'
-  }
+    slot: 'operations',
+  },
 ]
 
 const multipleTable = ref()
 
 const handleEdit = (row, index) => {
-  console.log('编辑:', row, index)
-  alert(`编辑基金: ${row.fundName}`)
+  console.log('編輯:', row, index)
+  alert(`編輯基金: ${row.fundName}`)
 }
 
 const handleDelete = (row, index) => {
-  const confirmed = confirm(`确定要删除 ${row.fundName} 吗？`)
+  const confirmed = confirm(`確定要刪除 ${row.fundName} 嗎？`)
   if (confirmed) {
     tableData.value.splice(index, 1)
-    alert('删除成功!')
+    alert('刪除成功!')
   }
 }
 
-const getStatusClass = (status) => {
+/**
+ * 狀態類別
+ * @param {string} status 狀態
+ * @returns {string} 狀態類別
+ */
+const getStatusClass = status => {
   const statusClasses = {
-    active: 'bg-green-100 text-green-800',
-    suspended: 'bg-yellow-100 text-yellow-800',
-    closed: 'bg-red-100 text-red-800'
+    primary: 'bg-blue-100 text-blue-800',
+    warning: 'bg-yellow-100 text-yellow-800',
+    success: 'bg-green-100 text-green-800',
+    info: 'bg-gray-100 text-gray-800',
+    danger: 'bg-red-100 text-red-800',
   }
   return statusClasses[status] || 'bg-gray-100 text-gray-800'
 }
 
-const getStatusText = (status) => {
+/**
+ * 狀態文字
+ * @param {string} status 狀態
+ * @returns {string} 狀態文字
+ */
+const getStatusText = status => {
   const statusTexts = {
-    active: '活躍',
-    suspended: '暫停',
-    closed: '關閉'
+    primary: '活躍',
+    success: '成功',
+    info: '一般',
+    warning: '暫停',
+    danger: '關閉',
   }
   return statusTexts[status] || '未知'
 }
-</script> 
+</script>

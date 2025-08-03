@@ -44,7 +44,10 @@ export function useTableColumnWidths(
     currentContainerWidth.value = elements.tableContainerRef.value.clientWidth
 
     // 只要寬度沒變，就直接跳過
-    if (lastContainerWidth !== null && currentContainerWidth.value === lastContainerWidth) {
+    if (
+      lastContainerWidth !== null &&
+      currentContainerWidth.value === lastContainerWidth
+    ) {
       return
     }
 
@@ -78,10 +81,12 @@ export function useTableColumnWidths(
 
         // 取得所有 cell（表頭+表身）
         const cellEls = [
-          ...Array.from(document.getElementsByClassName(`${tableId.value}-cell-${i}`))
+          ...Array.from(
+            document.getElementsByClassName(`${tableId.value}-cell-${i}`)
+          ),
         ] as HTMLElement[]
 
-        cellEls.forEach((el) => {
+        cellEls.forEach(el => {
           const rect = el.getBoundingClientRect()
           const width = Math.ceil(rect?.width ?? 0)
           maxWidth = Math.max(maxWidth, width)
@@ -95,16 +100,23 @@ export function useTableColumnWidths(
     const availableWidth = currentContainerWidth.value - ROW_PADDING
     const gapTotalWidth = (colCount - 1) * COLUMN_GAP
     const remainingWidth = availableWidth - gapTotalWidth
-    const totalOriginalWidth = originalWidths.value.reduce((sum, w) => sum + w, 0)
+    const totalOriginalWidth = originalWidths.value.reduce(
+      (sum, w) => sum + w,
+      0
+    )
 
     if (totalOriginalWidth > remainingWidth) {
       // 超過表格寬度，最大200
-      maxColWidths.value = originalWidths.value.map((w) => Math.min(w, MAX_COLUMN_WIDTH))
+      maxColWidths.value = originalWidths.value.map(w =>
+        Math.min(w, MAX_COLUMN_WIDTH)
+      )
     } else {
       // 未超過，等寬填滿
       const evenWidth = Math.floor(remainingWidth / colCount)
       const extra = remainingWidth % colCount
-      maxColWidths.value = originalWidths.value.map((_, idx) => evenWidth + (idx < extra ? 1 : 0))
+      maxColWidths.value = originalWidths.value.map(
+        (_, idx) => evenWidth + (idx < extra ? 1 : 0)
+      )
     }
 
     // 動畫結束後取消 isResizing
@@ -134,7 +146,7 @@ export function useTableColumnWidths(
       resizeObserver.disconnect()
     }
 
-    resizeObserver = new ResizeObserver((entries) => {
+    resizeObserver = new ResizeObserver(entries => {
       for (const entry of entries) {
         const newWidth = entry.contentRect.width
 
@@ -206,11 +218,11 @@ export function useTableColumnWidths(
   const gridStyle = computed(() => {
     const cols =
       maxColWidths.value.length > 0
-        ? maxColWidths.value.map((width) => width + 'px')
+        ? maxColWidths.value.map(width => width + 'px')
         : filteredColumns.value.map(() => 'max-content')
 
     return {
-      gridTemplateColumns: cols.join(' ')
+      gridTemplateColumns: cols.join(' '),
     }
   })
 
@@ -224,6 +236,6 @@ export function useTableColumnWidths(
     updateColWidths,
     setupResizeObserver,
     initializeColWidths,
-    cleanup
+    cleanup,
   }
 }

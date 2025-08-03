@@ -1,20 +1,20 @@
 <template>
-  <div 
+  <div
     ref="tableRef"
-    class="el-table" 
+    class="el-table"
     :class="tableClasses"
     :style="tableStyle"
   >
     <!-- 表格头部 - 固定头部 -->
-    <div 
-      v-if="showHeader" 
+    <div
+      v-if="showHeader"
       ref="headerWrapperRef"
       class="el-table__header-wrapper"
       :style="headerWrapperStyle"
     >
-      <table 
+      <table
         ref="headerTableRef"
-        class="el-table__header" 
+        class="el-table__header"
         :style="{ width: tableContentWidth }"
       >
         <colgroup>
@@ -51,8 +51,22 @@
                   class="caret-wrapper"
                   @click="handleSort(column)"
                 >
-                  <i class="sort-caret ascending" :class="{ active: currentSort.prop === column.prop && currentSort.order === 'ascending' }"></i>
-                  <i class="sort-caret descending" :class="{ active: currentSort.prop === column.prop && currentSort.order === 'descending' }"></i>
+                  <i
+                    class="sort-caret ascending"
+                    :class="{
+                      active:
+                        currentSort.prop === column.prop &&
+                        currentSort.order === 'ascending',
+                    }"
+                  ></i>
+                  <i
+                    class="sort-caret descending"
+                    :class="{
+                      active:
+                        currentSort.prop === column.prop &&
+                        currentSort.order === 'descending',
+                    }"
+                  ></i>
                 </span>
               </div>
             </th>
@@ -62,15 +76,15 @@
     </div>
 
     <!-- 表格主体 - 可滚动区域 -->
-    <div 
+    <div
       ref="bodyWrapperRef"
       class="el-table__body-wrapper"
       :style="bodyWrapperStyle"
       @scroll="handleBodyScroll"
     >
-      <table 
+      <table
         ref="bodyTableRef"
-        class="el-table__body" 
+        class="el-table__body"
         :style="{ width: tableContentWidth }"
       >
         <colgroup>
@@ -115,7 +129,11 @@
                 <span v-else-if="column.type === 'expand'">
                   <i
                     class="el-table__expand-icon"
-                    :class="{ 'el-table__expand-icon--expanded': expandedRows.includes(getRowKey(row, rowIndex)) }"
+                    :class="{
+                      'el-table__expand-icon--expanded': expandedRows.includes(
+                        getRowKey(row, rowIndex)
+                      ),
+                    }"
                     @click="toggleRowExpansion(row, rowIndex)"
                   >
                     ▶
@@ -123,11 +141,23 @@
                 </span>
                 <!-- 自定义内容 -->
                 <span v-else-if="column.slot">
-                  <slot :name="column.slot" :row="row" :column="column" :$index="rowIndex"></slot>
+                  <slot
+                    :name="column.slot"
+                    :row="row"
+                    :column="column"
+                    :$index="rowIndex"
+                  ></slot>
                 </span>
                 <!-- 格式化内容 -->
                 <span v-else-if="column.formatter">
-                  {{ column.formatter(row, column, getCellValue(row, column.prop), rowIndex) }}
+                  {{
+                    column.formatter(
+                      row,
+                      column,
+                      getCellValue(row, column.prop),
+                      rowIndex
+                    )
+                  }}
                 </span>
                 <!-- 普通内容 -->
                 <span v-else>
@@ -137,14 +167,21 @@
             </td>
           </tr>
           <!-- 展开行内容 -->
-          <template v-for="(expandRow, expandIndex) in sortedData" :key="'expand-check-' + getRowKey(expandRow, expandIndex)">
+          <template
+            v-for="(expandRow, expandIndex) in sortedData"
+            :key="'expand-check-' + getRowKey(expandRow, expandIndex)"
+          >
             <tr
               v-if="expandedRows.includes(getRowKey(expandRow, expandIndex))"
               :key="'expand-' + getRowKey(expandRow, expandIndex)"
               class="el-table__expanded-row"
             >
               <td :colspan="props.columns.length" class="el-table__cell">
-                <slot name="expand" :row="expandRow" :$index="expandIndex"></slot>
+                <slot
+                  name="expand"
+                  :row="expandRow"
+                  :$index="expandIndex"
+                ></slot>
               </td>
             </tr>
           </template>
@@ -153,7 +190,10 @@
     </div>
 
     <!-- 空数据提示 -->
-    <div v-if="!props.data || props.data.length === 0" class="el-table__empty-block">
+    <div
+      v-if="!props.data || props.data.length === 0"
+      class="el-table__empty-block"
+    >
       <span class="el-table__empty-text">
         <slot name="empty">{{ props.emptyText }}</slot>
       </span>
@@ -168,152 +208,152 @@ import { ref, computed, watch, nextTick, onMounted, onUnmounted } from 'vue'
 const props = defineProps({
   data: {
     type: Array,
-    default: () => []
+    default: () => [],
   },
   columns: {
     type: Array,
-    default: () => []
+    default: () => [],
   },
   height: {
     type: [String, Number],
-    default: ''
+    default: '',
   },
   maxHeight: {
     type: [String, Number],
-    default: ''
+    default: '',
   },
   stripe: {
     type: Boolean,
-    default: false
+    default: false,
   },
   border: {
     type: Boolean,
-    default: false
+    default: false,
   },
   size: {
     type: String,
     default: 'default',
-    validator: (value) => ['large', 'default', 'small'].includes(value)
+    validator: value => ['large', 'default', 'small'].includes(value),
   },
   fit: {
     type: Boolean,
-    default: true
+    default: true,
   },
   showHeader: {
     type: Boolean,
-    default: true
+    default: true,
   },
   highlightCurrentRow: {
     type: Boolean,
-    default: false
+    default: false,
   },
   currentRowKey: {
     type: [String, Number],
-    default: null
+    default: null,
   },
   rowClassName: {
     type: [String, Function],
-    default: ''
+    default: '',
   },
   rowStyle: {
     type: [Object, Function],
-    default: () => ({})
+    default: () => ({}),
   },
   cellClassName: {
     type: [String, Function],
-    default: ''
+    default: '',
   },
   cellStyle: {
     type: [Object, Function],
-    default: () => ({})
+    default: () => ({}),
   },
   headerRowClassName: {
     type: [String, Function],
-    default: ''
+    default: '',
   },
   headerRowStyle: {
     type: [Object, Function],
-    default: () => ({})
+    default: () => ({}),
   },
   headerCellClassName: {
     type: [String, Function],
-    default: ''
+    default: '',
   },
   headerCellStyle: {
     type: [Object, Function],
-    default: () => ({})
+    default: () => ({}),
   },
   rowKey: {
     type: [String, Function],
-    default: ''
+    default: '',
   },
   emptyText: {
     type: String,
-    default: '暂无数据'
+    default: '暂无数据',
   },
   defaultExpandAll: {
     type: Boolean,
-    default: false
+    default: false,
   },
   expandRowKeys: {
     type: Array,
-    default: () => []
+    default: () => [],
   },
   defaultSort: {
     type: Object,
-    default: () => ({})
+    default: () => ({}),
   },
   tooltipEffect: {
     type: String,
-    default: 'dark'
+    default: 'dark',
   },
   showSummary: {
     type: Boolean,
-    default: false
+    default: false,
   },
   sumText: {
     type: String,
-    default: '合计'
+    default: '合计',
   },
   summaryMethod: {
     type: Function,
-    default: null
+    default: null,
   },
   spanMethod: {
     type: Function,
-    default: null
+    default: null,
   },
   selectOnIndeterminate: {
     type: Boolean,
-    default: true
+    default: true,
   },
   indent: {
     type: Number,
-    default: 16
+    default: 16,
   },
   lazy: {
     type: Boolean,
-    default: false
+    default: false,
   },
   load: {
     type: Function,
-    default: null
+    default: null,
   },
   treeProps: {
     type: Object,
     default: () => ({
       hasChildren: 'hasChildren',
-      children: 'children'
-    })
+      children: 'children',
+    }),
   },
   fixedHeader: {
     type: Boolean,
-    default: false
+    default: false,
   },
   scrollHeight: {
     type: [String, Number],
-    default: ''
-  }
+    default: '',
+  },
 })
 
 // Emits - 仿照 Element Plus Table 的事件
@@ -334,7 +374,7 @@ const emit = defineEmits([
   'filter-change',
   'current-change',
   'header-dragend',
-  'expand-change'
+  'expand-change',
 ])
 
 // Refs
@@ -343,6 +383,9 @@ const headerWrapperRef = ref(null)
 const bodyWrapperRef = ref(null)
 const headerTableRef = ref(null)
 const bodyTableRef = ref(null)
+
+// 清理函数引用
+let cleanupScrollSync = null
 
 // 响应式数据
 const selectedRows = ref([])
@@ -354,13 +397,17 @@ const scrollTop = ref(0)
 // 计算属性
 const tableStyle = computed(() => {
   const style = {}
-  
+
   if (props.height) {
-    style.height = typeof props.height === 'number' ? `${props.height}px` : props.height
+    style.height =
+      typeof props.height === 'number' ? `${props.height}px` : props.height
   } else if (props.scrollHeight) {
-    style.height = typeof props.scrollHeight === 'number' ? `${props.scrollHeight}px` : props.scrollHeight
+    style.height =
+      typeof props.scrollHeight === 'number'
+        ? `${props.scrollHeight}px`
+        : props.scrollHeight
   }
-  
+
   return style
 })
 
@@ -370,24 +417,27 @@ const headerWrapperStyle = computed(() => {
     top: props.fixedHeader || props.scrollHeight ? '0' : 'auto',
     zIndex: props.fixedHeader || props.scrollHeight ? '10' : 'auto',
     overflow: 'hidden',
-    backgroundColor: '#fff'
+    backgroundColor: '#fff',
   }
-  
+
   return style
 })
 
 const bodyWrapperStyle = computed(() => {
   const style = {}
-  
+
   if (props.scrollHeight) {
     const headerHeight = props.showHeader ? 40 : 0 // 估算表头高度
-    const maxBodyHeight = (typeof props.scrollHeight === 'number' ? props.scrollHeight : parseInt(props.scrollHeight)) - headerHeight
+    const maxBodyHeight =
+      (typeof props.scrollHeight === 'number'
+        ? props.scrollHeight
+        : parseInt(props.scrollHeight)) - headerHeight
     style.maxHeight = `${maxBodyHeight}px`
     style.overflowY = 'auto'
   }
-  
+
   style.overflowX = 'auto'
-  
+
   return style
 })
 
@@ -397,7 +447,7 @@ const tableContentWidth = computed(() => {
     const colWidth = getColumnWidth(col)
     return width + (parseInt(colWidth) || 120)
   }, 0)
-  
+
   return `${totalWidth}px`
 })
 
@@ -408,43 +458,47 @@ const tableClasses = computed(() => {
     'el-table--border': props.border,
     'el-table--fixed-header': props.fixedHeader || props.scrollHeight,
     'el-table--scroll-height': !!props.scrollHeight,
-    [`el-table--${props.size}`]: props.size !== 'default'
+    [`el-table--${props.size}`]: props.size !== 'default',
   }
 })
 
 const isAllSelected = computed(() => {
-  if (!props.data || !Array.isArray(props.data) || props.data.length === 0) return false
+  if (!props.data || !Array.isArray(props.data) || props.data.length === 0)
+    return false
   return selectedRows.value.length === props.data.length
 })
 
 const isIndeterminate = computed(() => {
   if (!props.data || !Array.isArray(props.data)) return false
-  return selectedRows.value.length > 0 && selectedRows.value.length < props.data.length
+  return (
+    selectedRows.value.length > 0 &&
+    selectedRows.value.length < props.data.length
+  )
 })
 
 const sortedData = computed(() => {
   if (!props.data || !Array.isArray(props.data)) {
     return []
   }
-  
+
   if (!currentSort.value.prop || !currentSort.value.order) {
     return props.data
   }
 
   const { prop, order } = currentSort.value
   const column = props.columns.find(col => col.prop === prop)
-  
+
   return [...props.data].sort((a, b) => {
     let aVal = getCellValue(a, prop)
     let bVal = getCellValue(b, prop)
-    
+
     if (column && column.sortMethod) {
       return column.sortMethod(a, b)
     }
-    
+
     if (typeof aVal === 'string') aVal = aVal.toLowerCase()
     if (typeof bVal === 'string') bVal = bVal.toLowerCase()
-    
+
     if (aVal < bVal) return order === 'ascending' ? -1 : 1
     if (aVal > bVal) return order === 'ascending' ? 1 : -1
     return 0
@@ -452,14 +506,14 @@ const sortedData = computed(() => {
 })
 
 // 方法
-const getColumnWidth = (column) => {
+const getColumnWidth = column => {
   if (column.width) {
     return typeof column.width === 'number' ? `${column.width}px` : column.width
   }
   return `${column.minWidth || 120}px`
 }
 
-const getColumnStyle = (column) => {
+const getColumnStyle = column => {
   const style = {}
   if (column.minWidth) {
     style.minWidth = `${column.minWidth}px`
@@ -471,15 +525,15 @@ const getColumnStyle = (column) => {
 }
 
 // 处理表体滚动 - 同步表头滚动
-const handleBodyScroll = (event) => {
+const handleBodyScroll = event => {
   const { scrollLeft: newScrollLeft, scrollTop: newScrollTop } = event.target
-  
+
   // 同步表头的横向滚动
   if (headerWrapperRef.value && newScrollLeft !== scrollLeft.value) {
     headerWrapperRef.value.scrollLeft = newScrollLeft
     scrollLeft.value = newScrollLeft
   }
-  
+
   scrollTop.value = newScrollTop
 }
 
@@ -504,31 +558,36 @@ const getRowKey = (row, index) => {
 
 const getRowClass = (row, index) => {
   const classes = []
-  
+
   if (props.stripe && index % 2 === 1) {
     classes.push('el-table__row--striped')
   }
-  
+
   if (typeof props.rowClassName === 'function') {
     const result = props.rowClassName({ row, rowIndex: index })
     if (result) classes.push(result)
   } else if (props.rowClassName) {
     classes.push(props.rowClassName)
   }
-  
+
   return classes.join(' ')
 }
 
 const getCellClass = (row, column, rowIndex, colIndex) => {
   const classes = []
-  
+
   if (typeof props.cellClassName === 'function') {
-    const result = props.cellClassName({ row, column, rowIndex, columnIndex: colIndex })
+    const result = props.cellClassName({
+      row,
+      column,
+      rowIndex,
+      columnIndex: colIndex,
+    })
     if (result) classes.push(result)
   } else if (props.cellClassName) {
     classes.push(props.cellClassName)
   }
-  
+
   return classes.join(' ')
 }
 
@@ -539,45 +598,55 @@ const getCellStyle = (row, column, rowIndex, colIndex) => {
   return props.cellStyle
 }
 
-const getHeaderCellClass = (column) => {
+const getHeaderCellClass = column => {
   const classes = []
-  
+
   if (typeof props.headerCellClassName === 'function') {
-    const result = props.headerCellClassName({ column, columnIndex: props.columns.indexOf(column) })
+    const result = props.headerCellClassName({
+      column,
+      columnIndex: props.columns.indexOf(column),
+    })
     if (result) classes.push(result)
   } else if (props.headerCellClassName) {
     classes.push(props.headerCellClassName)
   }
-  
+
   return classes.join(' ')
 }
 
-const getHeaderCellStyle = (column) => {
+const getHeaderCellStyle = column => {
   if (typeof props.headerCellStyle === 'function') {
-    return props.headerCellStyle({ column, columnIndex: props.columns.indexOf(column) })
+    return props.headerCellStyle({
+      column,
+      columnIndex: props.columns.indexOf(column),
+    })
   }
   return props.headerCellStyle
 }
 
-const isRowSelected = (row) => {
+const isRowSelected = row => {
   const key = getRowKey(row, props.data.indexOf(row))
-  return selectedRows.value.some(selectedRow => getRowKey(selectedRow, 0) === key)
+  return selectedRows.value.some(
+    selectedRow => getRowKey(selectedRow, 0) === key
+  )
 }
 
 const toggleRowSelection = (row, selected) => {
   const key = getRowKey(row, props.data.indexOf(row))
-  const index = selectedRows.value.findIndex(selectedRow => getRowKey(selectedRow, 0) === key)
-  
+  const index = selectedRows.value.findIndex(
+    selectedRow => getRowKey(selectedRow, 0) === key
+  )
+
   if (selected === undefined) {
     selected = index === -1
   }
-  
+
   if (selected && index === -1) {
     selectedRows.value.push(row)
   } else if (!selected && index !== -1) {
     selectedRows.value.splice(index, 1)
   }
-  
+
   emit('select', selectedRows.value, row)
   emit('selection-change', selectedRows.value)
 }
@@ -588,7 +657,7 @@ const toggleSelectAll = () => {
   } else {
     selectedRows.value = [...props.data]
   }
-  
+
   emit('select-all', selectedRows.value)
   emit('selection-change', selectedRows.value)
 }
@@ -596,19 +665,19 @@ const toggleSelectAll = () => {
 const toggleRowExpansion = (row, index) => {
   const key = getRowKey(row, index)
   const expandIndex = expandedRows.value.indexOf(key)
-  
+
   if (expandIndex === -1) {
     expandedRows.value.push(key)
   } else {
     expandedRows.value.splice(expandIndex, 1)
   }
-  
+
   emit('expand-change', row, expandedRows.value.includes(key))
 }
 
-const handleSort = (column) => {
+const handleSort = column => {
   if (!column.sortable) return
-  
+
   let order = 'ascending'
   if (currentSort.value.prop === column.prop) {
     if (currentSort.value.order === 'ascending') {
@@ -617,16 +686,16 @@ const handleSort = (column) => {
       order = null
     }
   }
-  
+
   currentSort.value = {
     prop: order ? column.prop : null,
-    order: order
+    order: order,
   }
-  
+
   emit('sort-change', {
     column,
     prop: column.prop,
-    order
+    order,
   })
 }
 
@@ -656,7 +725,7 @@ const clearSort = () => {
   currentSort.value = { prop: null, order: null }
 }
 
-const clearFilter = (columnKey) => {
+const clearFilter = columnKey => {
   // Filter functionality would be implemented here
 }
 
@@ -675,7 +744,7 @@ defineExpose({
   clearSort,
   clearFilter,
   doLayout,
-  sort
+  sort,
 })
 
 // 生命周期
@@ -683,10 +752,10 @@ onMounted(() => {
   if (props.defaultSort.prop) {
     currentSort.value = {
       prop: props.defaultSort.prop,
-      order: props.defaultSort.order || 'ascending'
+      order: props.defaultSort.order || 'ascending',
     }
   }
-  
+
   if (props.defaultExpandAll) {
     expandedRows.value = props.data.map((row, index) => getRowKey(row, index))
   } else if (props.expandRowKeys.length > 0) {
@@ -702,17 +771,24 @@ onMounted(() => {
           headerWrapperRef.value.scrollLeft = bodyWrapperRef.value.scrollLeft
         }
       }
-      
+
       bodyWrapperRef.value.addEventListener('scroll', syncScroll)
-      
-      // 清理函数
-      onUnmounted(() => {
+
+      // 保存清理函数引用
+      cleanupScrollSync = () => {
         if (bodyWrapperRef.value) {
           bodyWrapperRef.value.removeEventListener('scroll', syncScroll)
         }
-      })
+      }
     }
   })
+})
+
+// 清理函数
+onUnmounted(() => {
+  if (cleanupScrollSync) {
+    cleanupScrollSync()
+  }
 })
 </script>
 
@@ -939,4 +1015,4 @@ onMounted(() => {
 .el-table--large .el-table__cell {
   padding: 16px 0;
 }
-</style> 
+</style>

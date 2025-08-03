@@ -7,8 +7,6 @@
 
 <script setup>
 import Header from './components/Header/index.vue'
-
 </script>
 
-<style>
-</style>
+<style></style>
